@@ -75,10 +75,7 @@
 		}
 	},
 	"scripts": {
-		"vscode:prepublish": "npm run release && npm run compile",
-		"compile": "tsc -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"release": "standard-version"
+		"postinstall": "node ./node_modules/vscode/bin/install"
 	},
 	"devDependencies": {
 		"@types/mocha": "^2.2.42",
