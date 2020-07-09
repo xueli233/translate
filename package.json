@@ -4,7 +4,7 @@
 	"description": "使用翻译api将其他语言到英文,转换成常见的变量命名形式",
 	"publisher": "sy",
 	"icon": "images/logo.png",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"engines": {
 		"vscode": "^1.23.0"
 	},
@@ -27,8 +27,8 @@
 		"keybindings": [
 			{
 				"command": "extension.varTranslation",
-				"key": "Alt+shift+t",
-				"mac": "cmd+shift+t"
+				"key": "f10",
+				"mac": "f10"
 			}
 		],
 		"commands": [
@@ -76,11 +76,7 @@
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run release && npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"release": "standard-version",
-		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+		"release": "standard-version"
 	},
 	"devDependencies": {
 		"@types/mocha": "^2.2.42",
