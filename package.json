@@ -1,10 +1,10 @@
 {
-	"name": "var-translation",
+	"name": "su-translation",
 	"displayName": "su-translate",
 	"description": "使用翻译api将其他语言到英文,转换成常见的变量命名形式",
 	"publisher": "sy",
 	"icon": "images/logo.png",
-	"version": "0.10.0",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.23.0"
 	},
@@ -22,7 +22,7 @@
 	"activationEvents": [
 		"onCommand:extension.varTranslation"
 	],
-	"main": "./out/extension.js",
+	"main": "./extension.js",
 	"contributes": {
 		"keybindings": [
 			{
@@ -96,12 +96,12 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/SvenZhao/var-translation"
+		"url": "https://github.com/xueli233/translate.git"
 	},
-	"homepage": "https://github.com/SvenZhao/var-translation/blob/master/README.md",
+	"homepage": "https://github.com/xueli233/translate/master/README.md",
 	"__metadata": {
-		"id": "d68e2779-de9d-4aec-bc54-02128ed6e6ba",
-		"publisherId": "bc5bad6a-1f60-42ce-92bc-fa7dab64eedb",
-		"publisherDisplayName": "sven"
+		"id": "",
+		"publisherId": "",
+		"publisherDisplayName": ""
 	}
 }
