@@ -8,6 +8,7 @@ function activate(context) {
 	if (!editor) {
 		return;
 	}
+
 	//获取文字
 	const selection = editor.selection;
 	let srcText = editor.document.getText(selection);
