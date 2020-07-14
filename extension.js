@@ -12,7 +12,7 @@ function activate(context) {
 	//获取文字
 	const selection = editor.selection;
 	let srcText = editor.document.getText(selection);
-	textArr = srcText.split(/[\s\r\n]/g);
+	let textArr = srcText.split(/[\s\r\n]/g);
 	try {
 		const engine = getTheTranslationEngine();
 		var str = '';
