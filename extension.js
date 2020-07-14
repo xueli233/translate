@@ -1,4 +1,4 @@
-"use strict";
+// "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -57,20 +57,46 @@ function vscodeTranslate() {
             }else if(translationEngine === 'AllToEn'){
 
             };
+
             const lang = yield determineLanguage(srcText, engine);
-            //非英语需要翻译
-            if (lang !== 'en') {
+
+            var arr = srcText.split(/[\n\s]/);
+            var str = '';
+            arr.forEach(item=>{
+                if(item){
+
                 const translationResult = yield translate(engine, srcText, lang);
+
                 if (translationResult && translationResult.result) {
-                    srcText = translationResult.result[0];
+                    // srcText = translationResult.result[0];
                 }
-            }
-            const result = yield Select(srcText);
+// yield Select(item).then(s=>{
+
+//                     str += `${item} ${ s}--------`
+// })
+                    // str += `${item} ${ yield Select(item)}--------`
+                    // str = `${item} ${yield Select(item)} \n`
+                    // editor.edit((builder) =>{ builder.insert(builder.setEndOfLine(2), str ); });
+                }
+            })
+
+		vscode_1.window.showInformationMessage(str);
+            // editor.edit((builder) => builder.replace(selection, srcText + ' ' + str));
+            return;
+            // //非英语需要翻译
+            // if (lang !== 'en') {
+            //     const translationResult = yield translate(engine, srcText, lang);
+            //     if (translationResult && translationResult.result) {
+            //         srcText = translationResult.result[0];
+            //     }
+            // }
+            // const result = yield Select(srcText);
+
             if (!result) {
                 return;
             }
             //替换文案
-            editor.edit((builder) => builder.replace(selection, srcText + ' ' + result));
+            // editor.edit((builder) => builder.replace(selection, srcText + ' ' + result));
         }
         catch (err) {
             vscode_1.window.showInformationMessage(`出错了设置切换一下引擎,当前的引擎是${translationEngine}`);
