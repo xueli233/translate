@@ -5,6 +5,12 @@ const change_case_1 = require("change-case");
 
 
 function activate(context) {
+    let disposable = vscode.commands.registerCommand('demo.helloWorld', handle);
+    context.subscriptions.push(disposable);
+}
+exports.activate = activate;
+function handle(params) {
+
     // var srcText = ['我的','你的','他的'];
     // 获取文本信息
     const editor = vscode.window.activeTextEditor;
@@ -20,44 +26,77 @@ function activate(context) {
     try {
         const engine = getTheTranslationEngine();
         var str = '';
-        return __awaiter(this, void 0, void 0, function*() {
+        var codeStr='';
+        return __awaiter(this, void 0, void 0, function* () {
             var type = yield Select();
+
             for (const iterator of textArr) {
                 if (iterator) {
+                    // 当前语言
                     const lang = yield determineLanguage(iterator, engine);
-                    let res = yield translate(engine, iterator, lang);
+                    let [key, value] = iterator.split(/[\:\：]/);
+                    let valueType = typeof eval(`${value}`);
+                    //判断是否为浮点型
+                    if(valueType ==='number' && /^-?\d*\.\d+$/.test(eval(`${value}`)))valueType = 'float';
+                    // 翻译结果
+                    let res = yield translate(engine, key, lang);
                     let result = change_case_1[type](res.result[0] || res.result)
-                    str += `${res.text} ${result}\n`;
+                    codeStr += `${result}:${value}, //${res.text}\n`;
+                    str += `|${result}|${valueType}|${res.text} |\n`;
                 }
             }
-            editor.edit((builder) => builder.replace(selection, str));
-        });
-    } catch (error) {
+            var doc = `
+**简要描述：** 
 
-    }
-    let disposable = vscode.commands.registerCommand('demo.helloWorld', function() {
-        vscode.window.showInformationMessage('Hello World from demo!');
-    });
-    context.subscriptions.push(disposable);
+**请求URL：** 
+- \` http://xx.com/api/article/detail \`
+
+**请求方式：**
+- POST 
+
+**参数：** 
+
+|参数名|必选|类型|说明|
+|:----    |:---|:----- |-----   |
+
+**返回示例**
+\`\`\`
+{
+"code": 1,
+"msg":"提示信息"
+"data": {
+    ${codeStr}
 }
-exports.activate = activate;
+}
+\`\`\`
 
-function deactivate() {}
+**返回参数说明** 
+
+|参数名|类型|说明|
+|:-----  |:-----|-----                           |
+${str}
+**备注** 
+            `;
+            editor.edit((builder) => builder.replace(selection, doc));
+        });
+    } catch (e) {
+        vscode.window.showInformationMessage(JSON.stringify(e));
+    }
+}
+
+function deactivate() { }
 /**
  * 用户选择选择转换形式
  * @param word 需要转换的单词
  * @return  用户选择
  */
 function Select() {
-    return __awaiter(this, void 0, void 0, function*() {
+    return __awaiter(this, void 0, void 0, function* () {
         var items = [];
         var opts = { matchOnDescription: true, placeHolder: 'choose replace 选择替换' };
         items.push({ label: 'snakeCase', description: 'snakeCase 下划线' });
         items.push({ label: 'camelCase', description: 'camelCase 小驼峰' });
         items.push({ label: 'pascalCase', description: 'pascalCase 大驼峰' });
-
-        // items.push({ label: change_case_1.paramCase(word), description: 'paramCase 中划线' });
-        // items.push({ label: change_case_1.constantCase(word), description: 'constantCase 常量' });
         const selections = yield vscode.window.showQuickPick(items, opts);
         if (!selections) {
             return;
@@ -87,7 +126,7 @@ function getTheTranslationEngine() {
  * 判断目标语言
  */
 function determineLanguage(srcText, engine) {
-    return __awaiter(this, void 0, void 0, function*() {
+    return __awaiter(this, void 0, void 0, function* () {
         let lang;
         //正则快速判断英文
         if (/^[a-zA-Z\d\s\-\_]+$/.test(srcText)) {
@@ -102,7 +141,7 @@ function determineLanguage(srcText, engine) {
 }
 
 function translate(engine, srcText, lang) {
-    return __awaiter(this, void 0, void 0, function*() {
+    return __awaiter(this, void 0, void 0, function* () {
         if (translationEngine === 'google') {
             return engine.translate({ text: srcText, from: lang, to: 'en', com: true });
         }
@@ -110,13 +149,13 @@ function translate(engine, srcText, lang) {
     });
 }
 
-var __awaiter = (this && this.__awaiter) || function(thisArg, _arguments, P, generator) {
-    return new(P || (P = Promise))(function(resolve, reject) {
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 
-        function step(result) { result.done ? resolve(result.value) : new P(function(resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
