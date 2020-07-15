@@ -19,6 +19,13 @@
 				"command": "demo.helloWorld",
 				"title": "Hello World"
 			}
+		],
+		"keybindings": [
+			{
+				"command": "demo.helloWorld",
+				"key": "f10",
+				"mac": "f10"
+			}
 		]
 	},
 	"scripts": {
