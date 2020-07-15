@@ -43,6 +43,7 @@
 	},
 	"publisher": "xueli",
 	"dependencies": {
+		"change-case": "^4.1.1",
 		"translation-api": "^1.0.5"
 	}
 }
