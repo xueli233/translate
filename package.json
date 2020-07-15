@@ -48,6 +48,7 @@
 	"publisher": "xueli",
 	"dependencies": {
 		"change-case": "^4.1.1",
+		"request": "^2.88.2",
 		"translation-api": "^1.0.5"
 	}
 }

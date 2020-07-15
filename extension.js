@@ -2,22 +2,27 @@ const vscode = require('vscode');
 const translation_api_1 = require("translation-api");
 const translationEngine = 'youdao';
 const change_case_1 = require("change-case");
-
+var request = require('request');
 
 function activate(context) {
-    let disposable = vscode.commands.registerCommand('demo.helloWorld', handle);
+    let disposable = vscode.commands.registerCommand('demo.helloWorld', vscodeMain);
     context.subscriptions.push(disposable);
 }
 exports.activate = activate;
-function handle(params) {
-
-    // var srcText = ['我的','你的','他的'];
+function vscodeMain() {
+    request('https://11197714-26a6-4130-9f04-bfa59cd9421a.bspapp.com/http/getFieldValue', function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var list = JSON.parse(body).data;
+            handle(list)
+        }
+    });
+}
+function handle(list) {
     // 获取文本信息
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
         return;
     }
-
     //获取文字
     const selection = editor.selection;
     let srcText = editor.document.getText(selection);
@@ -26,7 +31,7 @@ function handle(params) {
     try {
         const engine = getTheTranslationEngine();
         var str = '';
-        var codeStr='';
+        var codeStr = '';
         return __awaiter(this, void 0, void 0, function* () {
             var type = yield Select();
 
@@ -37,12 +42,18 @@ function handle(params) {
                     let [key, value] = iterator.split(/[\:\：]/);
                     let valueType = typeof eval(`${value}`);
                     //判断是否为浮点型
-                    if(valueType ==='number' && /^-?\d*\.\d+$/.test(eval(`${value}`)))valueType = 'float';
+                    if (valueType === 'number' && /^-?\d*\.\d+$/.test(eval(`${value}`))) valueType = 'float';
                     // 翻译结果
-                    let res = yield translate(engine, key, lang);
-                    let result = change_case_1[type](res.result[0] || res.result)
-                    codeStr += `${result}:${value}, //${res.text}\n`;
-                    str += `|${result}|${valueType}|${res.text} |\n`;
+                    let item = list.find(i => i.field === key);
+                    let result = '';
+                    if (item) {
+                        result = item.value;
+                    } else {
+                        let res = yield translate(engine, key, lang);
+                        result = change_case_1[type](res.result[0] || res.result)
+                    }
+                    codeStr += `${result}:${value}, //${key}\n`;
+                    str += `|${result}|${valueType}|${key} |\n`;
                 }
             }
             var doc = `
