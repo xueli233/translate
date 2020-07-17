@@ -53,7 +53,7 @@ function handle(list) {
                         result = change_case_1[type](res.result[0] || res.result)
                     }
                     codeStr += `${result}:${value}, //${key}\n`;
-                    str += `|${result}|${valueType}|${key} |\n`;
+                    str += `|${result}|${valueType || 'string'}|${key} |\n`;
                 }
             }
             var doc = `
