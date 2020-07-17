@@ -60,17 +60,17 @@ function handle(list) {
 **简要描述：** 
 
 **请求URL：** 
-- \` http://xx.com/api/article/detail \`
+- \` http://xx.com/api/xxx/xxxx \`
 
 **请求方式：**
 - POST 
 
 **参数：** 
 
-|参数名|必选|类型|说明|
-|:----    |:---|:----- |-----   |
+|参数名|类型|说明|
+|:----|:----- |-----   |
 
-**返回示例**
+**返回或参数示例**
 \`\`\`
 {
 "code": 1,
@@ -112,7 +112,6 @@ function Select() {
         if (!selections) {
             return;
         }
-
         return selections.label;
     });
 }
